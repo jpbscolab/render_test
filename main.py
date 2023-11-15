@@ -1,7 +1,7 @@
 from pathlib import Path
 from datetime import datetime
 
-import uvicorn
+# import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
@@ -36,7 +36,7 @@ async def get_sample_pptx():
     
     response = FileResponse(
                             path=file_path,
-                            filename=f"download_{now.strftime('%Y%m%d%H%M%S')}_{filename}"
+                            filename=f"download_{now.strftime('%Y%m%d%H%M%S')}_test.pptx"
                             )
     return response
 
