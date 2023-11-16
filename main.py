@@ -15,14 +15,14 @@ from createPptx import createSamplePptx, createPptx
 app = FastAPI()
 
 # renderのBase URL
-# base_url = 'http://127.0.0.1:8000'
-base_url = 'https://render-test-q8db.onrender.com'
+base_url = 'http://127.0.0.1:8000'
+# base_url = 'https://render-test-q8db.onrender.com'
 
 # リクエストbodyの定義
 class SlideDef(BaseModel):
     title: str
     content: str
-    note: Optional[str]=None
+    note: Optional[str]=''
     keywords: Optional[list[str]]=[]
 
 class PresentationDef(BaseModel):
