@@ -14,6 +14,10 @@ from createPptx import createSamplePptx, createPptx
 
 app = FastAPI()
 
+# renderのBase URL
+# base_url = 'http://127.0.0.1:8000'
+base_url = 'https://render-test-q8db.onrender.com'
+
 # リクエストbodyの定義
 class SlideDef(BaseModel):
     title: str
@@ -36,26 +40,34 @@ def home():
     return {"message": "Hello World"}
 
 
-# @app.get("/get_file/{filename:path}")
-# async def get_file(filename: str):
-#     '''任意ファイルのダウンロード'''
-#     current = Path()
-#     file_path = current / "files" / filename
+@app.get("/get_file/{filename:path}")
+async def get_file(filename: str):
+    '''任意ファイルのダウンロード'''
+    current = Path()
+    file_path = current / "files" / filename
     
-#     now = datetime.now()
+    now = datetime.now()
     
-#     response = FileResponse(
-#                             path=file_path,
-#                             filename=f"download_{now.strftime('%Y%m%d%H%M%S')}_{filename}"
-#                             )
-#     return response
+    response = FileResponse(
+                            path=file_path,
+                            filename=f"download_{now.strftime('%Y%m%d%H%M%S')}_{filename}"
+                            )
+    return response
+
 
 @app.get("/get_sample_pptx")
 async def get_sample_pptx():
-    '''サンプルパワーポイントファイルの作成'''
+    '''サンプルパワーポイントファイルのダウンロードリンクを返す'''
+    file_name = createSamplePptx()
+    return {"url": base_url + '/get_file/' + file_name}
+
+
+@app.get("/download_sample_pptx")
+async def download_sample_pptx():
+    '''サンプルパワーポイントファイルの直接ダウンロード'''
     file_name = createSamplePptx()
 
-    '''任意ファイルのダウンロード'''
+    '''ファイルの直接ダウンロード'''
     current = Path()
     file_path = current / "files" / file_name
     
@@ -68,16 +80,17 @@ async def get_sample_pptx():
                             )
     return response
 
-@app.post("/create_pptx")
-async def create_pptx(presentationDef: PresentationDef):
-    '''パワーポイントファイルの作成'''
+
+@app.post("/create_and_download_pptx")
+async def create_and_download_pptx(presentationDef: PresentationDef):
+    '''パワーポイントファイルを作成し直接ダウンロードする'''
     slide_titles = [slide.title for slide in presentationDef.slides]
     slide_contents = [slide.content for slide in presentationDef.slides]
     slide_notes = [slide.note for slide in presentationDef.slides]
     keywords = [slide.keywords for slide in presentationDef.slides]
     file_name = createPptx(slide_titles, slide_contents, slide_notes, keywords)
 
-    '''任意ファイルのダウンロード'''
+    '''ファイルのダウンロード'''
     current = Path()
     file_path = current / "files" / file_name
     
@@ -89,6 +102,17 @@ async def create_pptx(presentationDef: PresentationDef):
                             filename=f"download_{now.strftime('%Y%m%d%H%M%S')}_{file_name}"
                             )
     return response
+
+
+@app.post("/create_pptx")
+async def create_pptx(presentationDef: PresentationDef):
+    '''パワーポイントファイルを作成しダウンロードリンクを返す'''
+    slide_titles = [slide.title for slide in presentationDef.slides]
+    slide_contents = [slide.content for slide in presentationDef.slides]
+    slide_notes = [slide.note for slide in presentationDef.slides]
+    keywords = [slide.keywords for slide in presentationDef.slides]
+    file_name = createPptx(slide_titles, slide_contents, slide_notes, keywords)
+    return {"url": base_url + '/get_file/' + file_name}
 
 
 if __name__ == "__main__":
