@@ -67,8 +67,8 @@ async def get_sample_pptx():
                             )
     return response
 
-@app.post("/get_pptx")
-async def get_pptx(presentationDef: PresentationDef):
+@app.post("/create_pptx")
+async def create_pptx(presentationDef: PresentationDef):
     '''パワーポイントファイルの作成'''
     slide_titles = [slide.slide_title for slide in presentationDef.slides]
     slide_contents = [slide.slide_content for slide in presentationDef.slides]
