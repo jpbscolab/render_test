@@ -1,0 +1,50 @@
+from deta import Deta
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+
+deta = Deta("c0922pnk_********************************")
+db = deta.Base('simpleDB')
+
+app = FastAPI()
+
+class User(BaseModel):
+    name: str
+    age: int
+    hometown: str
+
+
+@app.get("/")
+def index():
+    return {"message": "Hello world"}
+
+
+@app.post("/users", status_code=201)
+def create_user(user: User):
+    user = db.put(user.dict())
+    return user
+
+
+@app.get("/users/<key>")
+def read_user(key: str):
+    user = db.get(key)
+    return user if user else JSONResponse({"erorr": "Not found"}, 404)
+
+
+
+@app.put("/users/<key>")
+def update_user(key: str, user: User):
+    if db.get(key):
+        user = db.put(user.dict(), key)
+        return user
+    else:
+        return JSONResponse({"erorr": "Not found"}, 404)
+
+
+@app.delete("/users/<key>")
+def delete_user(key: str):
+    if db.get(key):
+        db.delete(key)
+        return JSONResponse({"message": "deleted"}, 200)
+    else:
+        return JSONResponse({"erorr": "Not found"}, 404)
