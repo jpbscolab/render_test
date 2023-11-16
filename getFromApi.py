@@ -5,8 +5,8 @@ t_delta = datetime.timedelta(hours=9)
 JST = datetime.timezone(t_delta, 'JST')
 dt_now = datetime.datetime.now(JST)
 
-uri = "http://127.0.0.1:8000/create_pptx"
-# uri = "https://render-test-q8db.onrender.com/create_pptx"
+# uri = "http://127.0.0.1:8000/create_pptx"
+uri = "https://render-test-q8db.onrender.com/create_pptx"
 # payload = {"presentation_title": "pptx作成テスト",
 #            "slides": [ 
 #                 {
