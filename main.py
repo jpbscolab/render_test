@@ -84,6 +84,7 @@ async def create_pptx(presentationDef: PresentationDef):
     
     response = FileResponse(
                             path=file_path,
+                            media_type= 'application/vnd.mspowerpoint',
                             filename=f"download_{now.strftime('%Y%m%d%H%M%S')}_{file_name}"
                             )
     return response
