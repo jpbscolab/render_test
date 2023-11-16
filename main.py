@@ -16,9 +16,9 @@ app = FastAPI()
 
 # リクエストbodyの定義
 class SlideDef(BaseModel):
-    slide_title: str
-    slide_content: str
-    slide_note: Optional[str]=None
+    title: str
+    content: str
+    note: Optional[str]=None
     keywords: Optional[list[str]]=[]
 
 class PresentationDef(BaseModel):
@@ -70,9 +70,9 @@ async def get_sample_pptx():
 @app.post("/create_pptx")
 async def create_pptx(presentationDef: PresentationDef):
     '''パワーポイントファイルの作成'''
-    slide_titles = [slide.slide_title for slide in presentationDef.slides]
-    slide_contents = [slide.slide_content for slide in presentationDef.slides]
-    slide_notes = [slide.slide_note for slide in presentationDef.slides]
+    slide_titles = [slide.title for slide in presentationDef.slides]
+    slide_contents = [slide.content for slide in presentationDef.slides]
+    slide_notes = [slide.note for slide in presentationDef.slides]
     keywords = [slide.keywords for slide in presentationDef.slides]
     file_name = createPptx(slide_titles, slide_contents, slide_notes, keywords)
 

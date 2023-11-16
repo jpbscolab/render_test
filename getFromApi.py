@@ -1,19 +1,19 @@
 import requests
 
-uri = "http://127.0.0.1:8000/get_pptx"
-# uri = "https://render-test-q8db.onrender.com/get_pptx"
-payload = {"presentation_title": "pptx作成テスト",
+# uri = "http://127.0.0.1:8000/create_pptx"
+uri = "https://render-test-q8db.onrender.com/create_pptx"
+payload = {"presentation_title": "pptx作成テスト20231116_1648",
            "slides": [ 
                 {
-                   "slide_title": "スライド作成プラグインと同様",
-                    "slide_content": "スライド作成プラグインと同様に",
-                    "slide_note": "ノート", 
+                    "title": "スライド作成プラグインと同様",
+                    "content": "スライド作成プラグインと同様に",
+                    "note": "ノート", 
                     "keywords": [] 
                 },
                 {
-                   "slide_title": "pptxをAPI経由で作成する",
-                    "slide_content": "API経由でpptxを作成することができます",
-                    "slide_note": "ノート", 
+                    "title": "pptxをAPI経由で作成する",
+                    "content": "API経由でpptxを作成することができます",
+                    "note": "ノート", 
                     "keywords": [] 
                 },
             ]
