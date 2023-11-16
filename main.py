@@ -2,8 +2,10 @@ from pathlib import Path
 from datetime import datetime
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
 from fastapi.responses import FileResponse
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from pydantic import BaseModel
 from typing import Optional
@@ -22,6 +24,12 @@ class SlideDef(BaseModel):
 class PresentationDef(BaseModel):
     presentation_title: str
     slides: list[SlideDef]
+
+@app.exception_handler(RequestValidationError)
+async def handler(request:Request, exc:RequestValidationError):
+    print(exc)
+    return JSONResponse(content={}, status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
 
 @app.get("/")
 def home():
