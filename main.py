@@ -84,11 +84,12 @@ async def download_sample_pptx():
 @app.post("/create_and_download_pptx")
 async def create_and_download_pptx(presentationDef: PresentationDef):
     '''パワーポイントファイルを作成し直接ダウンロードする'''
+    presentation_title = presentationDef.presentation_title
     slide_titles = [slide.title for slide in presentationDef.slides]
     slide_contents = [slide.content for slide in presentationDef.slides]
     slide_notes = [slide.note for slide in presentationDef.slides]
     keywords = [slide.keywords for slide in presentationDef.slides]
-    file_name = createPptx(slide_titles, slide_contents, slide_notes, keywords)
+    file_name = createPptx(presentation_title, slide_titles, slide_contents, slide_notes, keywords)
 
     '''ファイルのダウンロード'''
     current = Path()
@@ -107,13 +108,16 @@ async def create_and_download_pptx(presentationDef: PresentationDef):
 @app.post("/create_pptx")
 async def create_pptx(presentationDef: PresentationDef):
     '''パワーポイントファイルを作成しダウンロードリンクを返す'''
+    presentation_title = presentationDef.presentation_title
     slide_titles = [slide.title for slide in presentationDef.slides]
     slide_contents = [slide.content for slide in presentationDef.slides]
     slide_notes = [slide.note for slide in presentationDef.slides]
     keywords = [slide.keywords for slide in presentationDef.slides]
-    file_name = createPptx(slide_titles, slide_contents, slide_notes, keywords)
+    file_name = createPptx(presentation_title, slide_titles, slide_contents, slide_notes, keywords)
     return {"url": base_url + '/get_file/' + file_name}
 
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
+# createSamplePptx()
